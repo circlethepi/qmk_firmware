@@ -1,0 +1,9 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+
+#pragma once
+
+#define DYNAMIC_KEYMAP_LAYER_COUNT 8
+
+// SPLIT
+#define SPLIT_LAYER_STATE_ENABLE
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
