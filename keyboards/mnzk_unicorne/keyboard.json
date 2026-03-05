@@ -64,7 +64,7 @@
         "default": {
             "animation": "solid_color"
         },
-        "max_brightness": 180,
+        "max_brightness": 150,
         "split_count": [27, 27],
         "driver": "ws2812",
         "layout": [

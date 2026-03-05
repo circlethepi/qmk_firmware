@@ -17,6 +17,7 @@ enum {
   _MEDIA,
   _EDIT,
   _UTILITY,
+  _OBSIDIAN,
 
   _TOTAL_LAYERS
 };
@@ -36,14 +37,25 @@ enum {
 #define RA_E    LALT_T(KC_E)
 #define RC_I    RCTL_T(KC_I)
 
+// Symbol Home Row Mods
+#define LC_LPRN LCTL_T(LSFT(KC_9))
+#define LA_RPRN LALT_T(LSFT(KC_0))
+#define LG_LBRC LGUI_T(KC_LBRC)
+#define LS_RBRC LSFT_T(KC_RBRC)
+
+#define RS_4    RSFT_T(KC_4)
+#define RG_5    RGUI_T(KC_5)
+#define RA_6    LALT_T(KC_6)
+#define RC_EQL  RCTL_T(KC_EQL)
+
 // Layer Navigation 
 #define CK_LLK3     LT(_UTILITY, KC_BACKSLASH) 
-#define CK_LLK2     LT(_EDIT, KC_SPACE)
-#define CK_LLK1     LT(_SYMBOL, KC_BSPC)
+#define CK_LLK2     LT(_SYMBOL, KC_BACKSPACE)
+#define CK_LLK1     LT(_EDIT, KC_ENTER)
 
-#define CK_RLK1     LT(_SYMBOL, KC_ENTER)
-#define CK_RLK2     LT(_MEDIA, KC_SPACE)
-#define CK_RLK3     LT(_NAV, KC_SLASH)
+#define CK_RLK1     LT(_NAV, KC_ENTER)
+#define CK_RLK2     LT(_SYMBOL, KC_SPACE)
+#define CK_RLK3     LT(_MEDIA, KC_SLSH)
 
 // basic shortcuts (mac)
 #define UNDO    LGUI(KC_Z)
@@ -79,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
          KC_TAB,    LC_N,    LA_R,    LG_T,    LS_S,    KC_G,                         KC_Y,    RS_H,    RG_A,    RA_E,    RC_I, KC_COMM,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LALT,    KC_X,    KC_Q,    KC_M,    KC_W,    KC_B,                         KC_B,    KC_K,    KC_P, KC_QUOT, KC_SCLN, KC_SLSH,
+        KC_LALT,    KC_X,    KC_Q,    KC_M,    KC_W,    KC_B,                         KC_K,    KC_P, KC_QUOT,  KC_DOT, KC_SCLN, KC_SLSH,
     //'--------+--------+--------+--------+--------+--------+--------,  ,--------+--------+--------+--------+--------+--------+--------'
                                             CK_LLK3, CK_LLK2, CK_LLK1,    CK_RLK1, CK_RLK2, CK_RLK3
                                         //'--------+--------+--------'  '--------+--------+--------'
@@ -89,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,-----------------------------------------------------,                    ,-----------------------------------------------------,
         _______, KC_LABK, KC_RABK, KC_MINUS, KC_GRV, _______,                      KC_PSLS,    KC_7,    KC_8,    KC_9,KC_MINUS, _______,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        _______, KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC, KC_BSLS,                     KC_COMMA,    KC_4,    KC_5,    KC_6,KC_EQUAL, _______,
+        _______, LC_LPRN, LA_RPRN, LG_LBRC, LS_RBRC, KC_BSLS,                     KC_COMMA,    RS_4,    RG_5,    RA_6,  RC_EQL, _______,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|  
            REDO,    UNDO,     CUT,   COPY,    PASTE, _______,                       KC_DOT,    KC_1,    KC_2,    KC_3, KC_KP_0, _______,
     //'--------+--------+--------+--------+--------+--------+--------,  ,--------+--------+--------+--------+--------+--------+--------'
@@ -104,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
         _______, _______, MS_LEFT, MS_DOWN, MS_RGHT, MS_WHLD,                       GOBACK, KC_LEFT, KC_DOWN,KC_RIGHT,  GOFORE, _______, 
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        _______, KC_LCTL, KC_LSFT, _______, _______, MS_WHLU,                      _______, _______, _______, _______, _______, _______, \
+        _______, KC_LCTL, KC_LSFT, KC_LALT, _______, MS_WHLU,                      _______, _______, _______, _______, _______, _______, \
     //'--------+--------+--------+--------+--------+--------+--------,  ,--------+--------+--------+--------+--------+--------+--------'
                                         _______, MS_BTN1, MS_BTN2,    _______, _______, _______ 
                                     //'--------+--------+--------'  '--------+--------+--------'
@@ -142,6 +154,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 /*===========================================================================*/
+// COMBOS
+/*===========================================================================*/
+enum combos {
+  FO_DOLLAR,
+};
+
+const uint16_t PROGMEM fo_dollar[] = {    KC_F,    KC_O,  COMBO_END};
+
+combo_t key_combos[] = {
+  [FO_DOLLAR]   =   COMBO(fo_dollar, LSFT(KC_4)),
+};
+
+
+/*===========================================================================*/
+// Data Sync - from desync corne keymap (for later)
+/*===========================================================================*/
+
+// #include "transactions.h"
+
+// typedef struct _master_to_slave_t {
+//     struct {
+//         bool static_display :1;
+//         bool timeout :1;
+//         bool active :1;
+//     } oled;
+
+//     struct {
+//         bool capturing :1;
+//         bool active :1;
+//     } case_lock;
+// } master_to_slave_t;
+
+// master_to_slave_t sync_data;
+
+// void user_config_sync_handler(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer,
+//                       uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
+//     if (initiator2target_buffer_size == sizeof(master_to_slave_t)) {
+//         memcpy(&sync_data, initiator2target_buffer, initiator2target_buffer_size);
+//     }
+// }
+
+
+
+/*===========================================================================*/
 // OLED 
 /*===========================================================================*/
 
@@ -168,33 +224,49 @@ bool oled_task_user(void) {
 /*===========================================================================*/
 
 
-#ifdef RGB_MATRIX_ENABLE
-void keyboard_post_init_user(void) {
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-    rgb_matrix_sethsv_noeeprom(220, 30, 128);  
-    set_underglow(200, 200, 200, 0, 255);
-}
 
-bool rgb_matrix_indicators_user(void) {    
+#ifdef RGB_MATRIX_ENABLE
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+
     // Set thumb keys based on active layer
     switch (get_highest_layer(layer_state)) {
-        case 0:
-            set_thumb_keys(255, 215, 0, 0, 255);  // Golden yellow
+        case _SYMBOL:
+            set_thumb_keys(0, 255, 0);    // Green
             break;
-        case 1:
-            set_thumb_keys(0, 255, 0, 0, 255);    // Green
+        case _NAV:
+            set_thumb_keys(0, 0, 255);    // Blue
             break;
-        case 2:
-            set_thumb_keys(0, 0, 255, 0, 255);    // Blue
+        case _MEDIA:
+            set_thumb_keys(128, 0, 190);  // Purple
             break;
-        case 3:
-            set_thumb_keys(128, 0, 128, 0, 255);  // Purple
+        case _EDIT:
+            set_thumb_keys(255, 100, 0);  // Orange
             break;
+        case _UTILITY:
+            set_thumb_keys(255, 0, 0);  // RED
+            break;
+        case _BASE:
         default:
-            set_thumb_keys(255, 215, 0, 0, 255);  // Golden yellow
+            set_thumb_keys(255, 215, 0);  // Golden yellow
             break;
     }
     
     return false;
 }
+
 #endif
+
+
+// Boot
+void keyboard_post_init_user(void) {
+    layer_move(_BASE);
+
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(220, 30, 128);  
+    set_underglow(200, 200, 200);
+
+}
+
+
+
