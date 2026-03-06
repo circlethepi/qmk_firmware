@@ -38,8 +38,8 @@ enum {
 #define RC_I    RCTL_T(KC_I)
 
 // Symbol Home Row Mods
-#define LC_LPRN LCTL_T(LSFT(KC_9))
-#define LA_RPRN LALT_T(LSFT(KC_0))
+// #define LC_LPRN LCTL_T(LSFT(KC_9))
+// #define LA_RPRN LALT_T(LSFT(KC_0))
 #define LG_LBRC LGUI_T(KC_LBRC)
 #define LS_RBRC LSFT_T(KC_RBRC)
 
@@ -80,6 +80,16 @@ enum {
 #define ZOOMOUT LGUI(KC_MINS)
 
 
+// custom keycodes
+enum custom_keycodes {
+    LC_LPRN,
+    LA_RPRN,
+};
+
+
+
+
+
 /*===========================================================================*/
 // ACTUAL KEYMAPPING 
 /*===========================================================================*/
@@ -87,11 +97,11 @@ enum {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT( //0
     //,-----------------------------------------------------,                    ,-----------------------------------------------------,
-         KC_ESC,    KC_Z,    KC_L,    KC_D,    KC_C,    KC_V,                         KC_J,    KC_F,    KC_O,    KC_U,  KC_DOT, KC_BSPC,
+         KC_ESC,    KC_B,    KC_L,    KC_D,    KC_C,    KC_V,                         KC_J,    KC_F,    KC_O,    KC_U,  KC_DOT, KC_BSPC,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
          KC_TAB,    LC_N,    LA_R,    LG_T,    LS_S,    KC_G,                         KC_Y,    RS_H,    RG_A,    RA_E,    RC_I, KC_COMM,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LALT,    KC_X,    KC_Q,    KC_M,    KC_W,    KC_B,                         KC_K,    KC_P, KC_QUOT,  KC_DOT, KC_SCLN, KC_SLSH,
+        KC_LALT,    KC_X,    KC_Q,    KC_M,    KC_W,    KC_Z,                         KC_K,    KC_P, KC_QUOT,  KC_DOT, KC_SCLN, KC_SLSH,
     //'--------+--------+--------+--------+--------+--------+--------,  ,--------+--------+--------+--------+--------+--------+--------'
                                             CK_LLK3, CK_LLK2, CK_LLK1,    CK_RLK1, CK_RLK2, CK_RLK3
                                         //'--------+--------+--------'  '--------+--------+--------'
@@ -223,8 +233,6 @@ bool oled_task_user(void) {
 // RGB MATRIX
 /*===========================================================================*/
 
-
-
 #ifdef RGB_MATRIX_ENABLE
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
@@ -256,6 +264,78 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 }
 
 #endif
+
+/*===========================================================================*/
+// TAP TIMING
+/*===========================================================================*/
+
+bool is_flow_tap_key(uint16_t keycode) {
+    switch (get_tap_keycode(keycode)) {
+        case KC_SPC:
+        case KC_A ... KC_Z:
+        case KC_DOT:
+        case KC_COMM:
+        case KC_SCLN:
+        case KC_SLSH:
+            return true;
+    }
+    return false;
+}
+
+uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record, 
+                           uint16_t prev_keycode) {
+    if (get_tap_keycode(prev_keycode) == KC_BSPC) {
+        return 0;
+    }
+
+    if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {
+        switch (keycode) {
+            // Shift mod-taps
+            case LS_S:
+            case RS_H:
+                return 25;
+
+            // Ctrl mod-taps
+            case LG_T:
+            case RG_A:
+                return 75;
+
+            // Alt mod-taps
+            case LA_R:
+            case RA_E:
+                return 100;
+
+            // GUI mod-taps
+            case LC_N:
+            case RC_I:
+                return 50;
+
+            default:
+                return FLOW_TAP_TERM;
+        }
+    }
+
+    return 0;
+}
+
+
+/*===========================================================================*/
+// Houkeeping / config
+/*===========================================================================*/
+
+// Onscreen Overlay
+#include "raw_hid.h"
+// Notifies the host of the layer change
+layer_state_t layer_state_set_user(layer_state_t state) {
+    uint8_t hi_layer = get_highest_layer(state);
+    uint8_t response[RAW_EPSIZE];
+    memset(response, 0x00, RAW_EPSIZE);
+    response[PAYLOAD_BEGIN] = PAYLOAD_MARK;
+    response[PAYLOAD_BEGIN + 1] = hi_layer;
+    raw_hid_send(response, RAW_EPSIZE);
+    return state;
+}
+
 
 
 // Boot

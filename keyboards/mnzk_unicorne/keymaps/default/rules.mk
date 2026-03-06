@@ -1,11 +1,9 @@
-# VIA_ENABLE = yes
-# VIAL_ENABLE = yes
 OLED_ENABLE = yes
-# VIALRGB_ENABLE = yes
 AUDIO_ENABLE = no
 WPM_ENABLE = yes
 # LTO_ENABLE = yes
 RGB_MATRIX_ENABLE = yes
-# TAP_DANCE_ENABLE = yes
-# QMK_SETTINGS = yes
 COMBO_ENABLE = yes
+
+# for onscreen keymap overlay
+RAW_ENABLE = yes

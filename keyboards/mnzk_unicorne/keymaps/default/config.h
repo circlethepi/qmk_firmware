@@ -32,3 +32,10 @@
         Q__NOTE(_D5), Q__NOTE(_DS5), H__NOTE(_G5)
 #   define STARTUP_SONG SONG(MNZK_START_SONG)
 #endif
+
+// Onscreen Overlay
+#define RAW_EPSIZE 32
+#define PAYLOAD_MARK 0x90
+#define PAYLOAD_BEGIN 24
+#define RAW_USAGE_PAGE 0xFF60
+#define RAW_USAGE 0x61
